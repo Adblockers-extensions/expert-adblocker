@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import "./contentScript.css";
 import axios from "axios";
 var getUrl = window.location.href;
+
+
 const App: React.FC<{}> = () => {
   const [offSwitch, setoffSwitch] = useState<boolean>();
 
@@ -27,7 +29,6 @@ const App: React.FC<{}> = () => {
     }, 10);
   }, [offSwitch]);
 
-  ////////////////////////////////////////////////////
 
   function adAdBlocker() {
     const divs = document.getElementsByTagName("div");
@@ -68,6 +69,7 @@ const App: React.FC<{}> = () => {
       }
     }
   }
+
   const website = [
     {
       id: 1,
@@ -83,6 +85,7 @@ const App: React.FC<{}> = () => {
       url: "https://www.twitch.tv/",
     },
   ];
+  
   useEffect(() => {
     let isMatched = false;
     for (let i = 0; i < website.length; i++) {
@@ -127,6 +130,7 @@ const App: React.FC<{}> = () => {
     </>
   );
 };
+
 const Tab = () => {
   useEffect(() => {
     const fetchData = async () => {
