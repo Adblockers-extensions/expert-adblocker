@@ -17,8 +17,10 @@ module.exports = {
     adsAdsRemoveSpotify: path.resolve("src/Spotify/ads_removal.js"),
     adswsHooksSpotify: path.resolve("src/Spotify/wsHook.js"),
     Youtube: path.resolve("src/Youtube/Youtube.tsx"),
-    peacock: path.resolve("src/peacock/peacock.js"),
+    jioCinema: path.resolve("src/jioCinema/jioCinemaAdBlocker.js"),
+    peacock: path.resolve("src/peacock/peacockAdBlocker.js"),
     hbomax: path.resolve("src/Hbomax/hbomax.js"),
+
   },
   module: {
     rules: [
@@ -70,6 +72,7 @@ module.exports = {
           "adsAdsRemoveSpotify",
           "adswsHooksSpotify",
           "Youtube",
+          "jioCinema",
           "peacock",
           "hbomax",
         ];
