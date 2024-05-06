@@ -19,6 +19,8 @@ module.exports = {
     Youtube: path.resolve("src/Youtube/Youtube.tsx"),
     jioCinema: path.resolve("src/jioCinema/jioCinemaAdBlocker.js"),
     peacock: path.resolve("src/peacock/peacockAdBlocker.js"),
+    hbomax: path.resolve("src/Hbomax/hbomax.js"),
+
   },
   module: {
     rules: [
@@ -72,6 +74,7 @@ module.exports = {
           "Youtube",
           "jioCinema",
           "peacock",
+          "hbomax",
         ];
         return !excludedChunks.includes(chunk.name);
       },

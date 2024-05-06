@@ -48,12 +48,15 @@
       "js": ["Youtube.js"]
     },
     {
+
       "matches": ["https://www.jiocinema.com/*"],
-      "js": ["jioCinema.js"]
-    },
-    {
+      "js": ["jioCinema.js"
       "matches": ["https://www.peacocktv.com/*"],
       "js": ["peacock.js"]
+    },
+    {
+      "matches": ["https://play.max.com/*"],
+      "js": ["hbomax.js"]
     }
   ],
   "web_accessible_resources": [
