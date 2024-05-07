@@ -1,12 +1,9 @@
-
 // background.js
-chrome.runtime.onInstalled.addListener(function(details) {
+chrome.runtime.onInstalled.addListener(function (details) {
+  refreshPage();
   if (details.reason === "install") {
-    // Extension installed for the first time
-    // Set a flag indicating the extension has been installed
     chrome.storage.local.set({ isInstalled: true });
-    //redirecting user to out website
-    chrome.tabs.create({ url: 'https://www.trueadblocker.net/' });
+    chrome.tabs.create({ url: "https://www.trueadblocker.net/" });
   }
 });
 
@@ -61,26 +58,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     );
   }
+
+  if (message.action === "getConfig") {
+  }
 });
 
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
+// FOR CRUNHCYROLL
+function refreshPage() {
+  console.log("Refreshing page .......");
+  chrome.tabs.query({ url: "*://*.crunchyroll.com/*" }, (tabs) => {
+    tabs.length > 0 &&
+      tabs.forEach((tab) => {
+        chrome.tabs.reload(tab.id);
+      });
+  });
+  console.log("Page Reloaded");
+}
