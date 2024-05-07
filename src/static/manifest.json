@@ -16,13 +16,7 @@
   "permissions": ["declarativeNetRequest", "storage"],
   "host_permissions": ["<all_urls>"],
   "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
+    "rule_resources": []
   },
   "options_page": "options.html",
   "background": {
@@ -48,21 +42,32 @@
       "js": ["Youtube.js"]
     },
     {
-
       "matches": ["https://www.jiocinema.com/*"],
-      "js": ["jioCinema.js"
+      "js": ["jioCinema.js"]
+    },
+    {
       "matches": ["https://www.peacocktv.com/*"],
       "js": ["peacock.js"]
     },
     {
       "matches": ["https://play.max.com/*"],
       "js": ["hbomax.js"]
+    },
+    {
+      "matches": ["*://*.crunchyroll.com/*"],
+      "js": ["crunchyroll.js"],
+      "match_origin_as_fallback": true,
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
       "resources": ["adRemove.js", "removeTwitchAds.js"],
       "matches": ["https://*.twitch.tv/*"]
+    },
+    {
+      "resources": ["crunchyroll.js"],
+      "matches": ["https://www.crunchyroll.com/*"]
     },
     {
       "resources": [
