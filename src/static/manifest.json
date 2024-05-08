@@ -37,10 +37,7 @@
       "matches": ["https://www.youtube.com/*"],
       "js": ["Youtube.js"]
     },
-    {
-      "matches": ["https://www.jiocinema.com/*"],
-      "js": ["jioCinema.js"]
-    },
+
     {
       "matches": ["https://www.peacocktv.com/*"],
       "js": ["peacock.js"]
@@ -59,6 +56,12 @@
       "matches": ["https://*.twitch.tv/*"],
       "js": ["adRemove.js", "removeTwitchAds.js"],
       "run_at": "document_start",
+      "match_origin_as_fallback": true,
+      "all_frames": true
+    },
+    {
+      "matches": ["https://www.jiocinema.com/*"],
+      "js": ["jioCinema.js"],
       "match_origin_as_fallback": true,
       "all_frames": true
     }
