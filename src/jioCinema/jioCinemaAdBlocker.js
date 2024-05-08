@@ -16,6 +16,10 @@ const callback = function (mutationsList, observer) {
           if (node.getAttribute("title") === "Advertisement") {
             node.addEventListener("loadedmetadata", () => {
               console.log("Ad Video : ", node);
+              const controls = document.querySelector(
+                ".mui-style-esv9wg-hideControls"
+              );
+              controls.style.display = "none";
               node.muted = true;
               node.style.display = "none";
               if (!isNaN(node.duration) && isFinite(node.duration)) {
@@ -24,6 +28,7 @@ const callback = function (mutationsList, observer) {
               } else {
                 console.log("Failed to Skip Ad video");
               }
+              controls.style.display = "block";
             });
           }
         }
