@@ -16,18 +16,40 @@
 //   .querySelector("#amazon-video-ads-ui")
 //   .querySelector("video").currentTime += 10;
 
-console.log("Twitch Ad Blocker Running..............");
-(() => {
-  setInterval(() => {
-    const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
-    if (videoAdsContainer) {
-      const adVideos = videoAdsContainer.querySelectorAll("video");
-      if (adVideos.length > 0) {
-        adVideos.forEach((ad) => {
-          ad.duration && (ad.currentTime = ad.duration);
-          console.log("Ad Skipped : ", ad);
-        });
-      }
+// SET TIMEOUT
+// (() => {
+//   setInterval(() => {
+//     const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
+//     console.log("videoAdsContainer found");
+//     if (videoAdsContainer) {
+//       const adVideos = videoAdsContainer.querySelectorAll("video");
+//       console.log("Total Ads count : ", adVideos.length);
+//       if (adVideos.length > 0) {
+//         adVideos.forEach((ad) => {
+//           ad.duration && (ad.currentTime = ad.duration);
+//           console.log("Ad Skipped : ", ad);
+//         });
+//       }
+//     }
+//   }, 250);
+// })();
+
+// BY MUTATION OBSERVER
+const checkForAdCountdown = () => {
+  const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
+  console.log("videoAdsContainer found");
+  if (videoAdsContainer) {
+    const adVideos = videoAdsContainer.querySelectorAll("video");
+    console.log("Total Ads count : ", adVideos.length);
+    if (adVideos.length > 0) {
+      adVideos.forEach((ad) => {
+        ad.duration && (ad.currentTime = ad.duration);
+        console.log("Ad Skipped : ", ad);
+      });
     }
-  }, 250);
-})();
+  }
+};
+
+const observer = new MutationObserver(checkForAdCountdown);
+observer.observe(document, { childList: true, subtree: true });
+checkForAdCountdown();
