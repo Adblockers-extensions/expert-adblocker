@@ -27,11 +27,7 @@
       "matches": ["<all_urls>"],
       "js": ["contentScript.js"]
     },
-    {
-      "matches": ["https://*.twitch.tv/*"],
-      "js": ["adRemove.js", "removeTwitchAds.js"],
-      "run_at": "document_start"
-    },
+
     {
       "matches": ["https://open.spotify.com/*"],
       "js": ["contentScriptSpotify.js"],
@@ -56,6 +52,13 @@
     {
       "matches": ["*://*.crunchyroll.com/*"],
       "js": ["crunchyroll.js"],
+      "match_origin_as_fallback": true,
+      "all_frames": true
+    },
+    {
+      "matches": ["https://*.twitch.tv/*"],
+      "js": ["adRemove.js", "removeTwitchAds.js"],
+      "run_at": "document_start",
       "match_origin_as_fallback": true,
       "all_frames": true
     }
