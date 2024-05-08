@@ -1,118 +1,55 @@
+// id="amazon-video-ads-iframe"
+{
+  /* <main id="amazon-video-ads-ui">
+  <div class="App">
+    <div style="background-color: black; height: 100%; position: absolute; width: 100%;">
+      <video
+        src="https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/0a0cd105-ae15-49cb-aa71-fc3645a791c1.MP4/mp4_900Kbs_30fps_48khz_96Kbs_480p_H264_baseline.mp4?c=589238365994342246&amp;a=586943023743236170&amp;d=15.015&amp;br=939&amp;w=854&amp;h=480&amp;ct=1014%2C1020&amp;ca=-"
+        style="height: 100%; width: 100%;"
+      ></video>
+    </div>
+  </div>
+</main>; */
+}
 
-chrome.storage.local.get("isInstalled", function(data) {
-    const local = data.isInstalled;
-    doSomethingWithLocal(local);
-  });
-  ////////receiving message from popup.js////////
-  chrome.runtime.onMessage.addListener(function (
-    request,
-    sender,
-    sendResponse
-  ) {
-    if (request.message == true) {
-      chrome.storage.local.set({ isInstalled: true }, () => {
-        console.log("Value is set true");
+// document
+//   .querySelector("#amazon-video-ads-ui")
+//   .querySelector("video").currentTime += 10;
+
+// SET TIMEOUT
+// (() => {
+//   setInterval(() => {
+//     const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
+//     console.log("videoAdsContainer found");
+//     if (videoAdsContainer) {
+//       const adVideos = videoAdsContainer.querySelectorAll("video");
+//       console.log("Total Ads count : ", adVideos.length);
+//       if (adVideos.length > 0) {
+//         adVideos.forEach((ad) => {
+//           ad.duration && (ad.currentTime = ad.duration);
+//           console.log("Ad Skipped : ", ad);
+//         });
+//       }
+//     }
+//   }, 250);
+// })();
+
+// BY MUTATION OBSERVER
+const checkForAdCountdown = () => {
+  const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
+  console.log("videoAdsContainer found");
+  if (videoAdsContainer) {
+    const adVideos = videoAdsContainer.querySelectorAll("video");
+    console.log("Total Ads count : ", adVideos.length);
+    if (adVideos.length > 0) {
+      adVideos.forEach((ad) => {
+        ad.duration && (ad.currentTime = ad.duration);
+        console.log("Ad Skipped : ", ad);
       });
-      window.location.reload();
-    } else if (request.message == false) {
-      chrome.storage.local.set({ isInstalled: false }, () => {
-        console.log("Value is set to false");
-      });
-      window.location.reload();
-    } else {
-      return;
     }
-    sendResponse({ farewell: "Response from background script" });
-  });
-  
-function doSomethingWithLocal(local){
-    if(local === true){
-        // Browser helpers
-const isChromium = typeof window.chrome !== 'undefined';
-const isFirefox = typeof window.browser !== 'undefined';
-const browser = isFirefox ? window.browser : window.chrome;
-// Get extension settings
-function updateSettings() {
-    browser.storage.local.get(['blockingMessageTTV','forcedQualityTTV','proxyTTV','proxyQualityTTV', 'adTimeTTV']).then(result => {
-        var settings = {
-            BannerVisible: true,
-            ForcedQuality: null,
-            ProxyType: null,
-            ProxyQuality: null,
-            AdTime: 0
-        };
-        if (result.blockingMessageTTV === 'true' || result.blockingMessageTTV === 'false') {
-            settings.BannerVisible = result.blockingMessageTTV === 'true';
-        }
-        if (result.forcedQualityTTV) {
-            settings.ForcedQuality = result.forcedQualityTTV;
-        }
-        if (result.proxyTTV) {
-            settings.ProxyType = result.proxyTTV;
-        }
-        if (result.proxyQualityTTV) {
-            settings.ProxyQuality = result.proxyQualityTTV;
-        }
-        if (result.adTimeTTV) {
-            settings.AdTime = result.adTimeTTV;
-        }
-        postMessage({
-            type: 'SetTwitchAdblockSettings',
-            settings: settings,
-        }, '*');
-    });
-}
+  }
+};
 
-window.addEventListener('message', (event) => {
-    if (event.data.type && event.data.type == 'SetTwitchAdTime') {
-        browser.storage.local.set({adTimeTTV: event.data.adtime});
-        console.log("Set ad time to " + event.data.adtime);
-    }
-});
-
-function appendBlockingScript() {
-    const script = document.createElement('script');
-    script.src = chrome.runtime.getURL('removeTwitchAds.js');
-    script.onload = updateSettings;
-    (document.body || document.head || document.documentElement).appendChild(script);
-}
-
-if (isFirefox) {
-    browser.storage.local.get('onOffTTV').then(
-        (result) => {
-            if (result?.onOffTTV) {
-                if (result.onOffTTV === 'true') {
-                    appendBlockingScript();
-                }
-            } else {
-                appendBlockingScript();
-            }
-        },
-        (error) => {
-            console.error(error);
-            appendBlockingScript();
-        }
-    );
-} else {
-    browser.storage.local.get(['onOffTTV'], function (result) {
-        if (browser.runtime.lastError) {
-            console.error(browser.runtime.lastError);
-            appendBlockingScript();
-            return;
-        }
-        if (result?.onOffTTV) {
-            if (result.onOffTTV === 'true') {
-                appendBlockingScript();
-            }
-        } else {
-            appendBlockingScript();
-        }
-    });
-}
-    }else{
-        return
-    }
-}
-
-
-
+const observer = new MutationObserver(checkForAdCountdown);
+observer.observe(document, { childList: true, subtree: true });
+checkForAdCountdown();
