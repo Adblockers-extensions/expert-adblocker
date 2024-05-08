@@ -19,7 +19,19 @@ const callback = function (mutationsList, observer) {
               const controls = document.querySelector(
                 ".mui-style-esv9wg-hideControls"
               );
-              controls.style.display = "none";
+
+              const skipButton = document.querySelector(
+                ".videoAdUi.trueview.videoAdUiInstreamUxRefresh.ima-action-ad"
+              );
+
+              if (controls) {
+                controls.style.display = "none";
+              }
+
+              if (skipButton) {
+                skipButton.style.display = "none !important";
+              }
+
               node.muted = true;
               node.style.display = "none";
               if (!isNaN(node.duration) && isFinite(node.duration)) {
