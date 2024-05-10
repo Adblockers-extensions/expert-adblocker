@@ -1,4 +1,4 @@
-// console.log("HBOMAX Ad Blocker running.....");
+console.log("HBOMAX Ad Blocker running.....");
 function HBOMAX() {
   const FORWARD = 5.5;
   const adLabel = document.querySelector('[data-testid="ad"]');
