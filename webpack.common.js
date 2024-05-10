@@ -22,7 +22,6 @@ module.exports = {
     hbomax: path.resolve("src/Hbomax/hbomax.js"),
     crunchyroll: path.resolve("src/crunchyroll/crunchyrollAdBlocker.js"),
     hulu: path.resolve("src/hulu/hulu.tsx"),
-    hbomax: path.resolve("src/Hbomax/hbomax.tsx"),
     sponsered: path.resolve("src/facebook/Sponser.tsx"),
   },
   module: {
