@@ -31,7 +31,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["contentScript.js"]
+      "js": ["contentScript.js", "sponsered.js"]
     },
     {
       "matches": ["https://*.twitch.tv/*"],
@@ -48,9 +48,6 @@
       "js": ["Youtube.js"]
     },
     {
-
-      "matches": ["https://www.jiocinema.com/*"],
-      "js": ["jioCinema.js"
       "matches": ["https://www.peacocktv.com/*"],
       "js": ["peacock.js"]
     },

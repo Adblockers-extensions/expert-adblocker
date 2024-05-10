@@ -2,19 +2,16 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-
 const App: React.FC<{}> = () => {
   const [first, setFirst] = useState<boolean>();
-  
+
   useEffect(() => {
-    chrome.storage.local.get("isInstalled", function (data) {
-      if (data.isInstalled !== undefined) {
-        setFirst(data.isInstalled);
+    chrome.storage.local.get("ExtensionState", function (data) {
+      if (data.ExtensionState !== undefined) {
+        setFirst(data.ExtensionState);
       }
     });
   }, []);
-
- 
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,12 +25,9 @@ const App: React.FC<{}> = () => {
     }, 10);
   }, [first]);
 
-
-
   ////////////////// removing YTs ads //////////////////////
   const adAdBlocker = () => {
     // console.log("adBlocker running");
-  
 
     function getDom() {
       const targetNode =
@@ -176,7 +170,6 @@ const App: React.FC<{}> = () => {
     });
 
     getDom();
-
   };
   ///////////injecting normal DOM for showing ads///////////
   const removeAdBlocker = () => {
@@ -269,12 +262,12 @@ const App: React.FC<{}> = () => {
     sendResponse
   ) {
     if (request.message == true) {
-      chrome.storage.local.set({ isInstalled: true }, () => {
+      chrome.storage.local.set({ ExtensionState: true }, () => {
         console.log("Value is set true");
       });
       window.location.reload();
     } else if (request.message == false) {
-      chrome.storage.local.set({ isInstalled: false }, () => {
+      chrome.storage.local.set({ ExtensionState: false }, () => {
         console.log("Value is set to false");
       });
       window.location.reload();

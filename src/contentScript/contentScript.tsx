@@ -5,14 +5,13 @@ import "./contentScript.css";
 import axios from "axios";
 var getUrl = window.location.href;
 
-
 const App: React.FC<{}> = () => {
   const [offSwitch, setoffSwitch] = useState<boolean>();
 
   useEffect(() => {
-    chrome.storage.local.get("isInstalled", function (data) {
-      if (data.isInstalled !== undefined) {
-        setoffSwitch(data.isInstalled);
+    chrome.storage.local.get("ExtensionState", function (data) {
+      if (data.ExtensionState !== undefined) {
+        setoffSwitch(data.ExtensionState);
       }
     });
   }, []);
@@ -28,7 +27,6 @@ const App: React.FC<{}> = () => {
       }
     }, 10);
   }, [offSwitch]);
-
 
   function adAdBlocker() {
     const divs = document.getElementsByTagName("div");
@@ -85,7 +83,7 @@ const App: React.FC<{}> = () => {
       url: "https://www.twitch.tv/",
     },
   ];
-  
+
   useEffect(() => {
     let isMatched = false;
     for (let i = 0; i < website.length; i++) {
@@ -109,12 +107,12 @@ const App: React.FC<{}> = () => {
     sendResponse
   ) {
     if (request.message == true) {
-      chrome.storage.local.set({ isInstalled: true }, () => {
+      chrome.storage.local.set({ ExtensionState: true }, () => {
         console.log("Value is set true");
       });
       window.location.reload();
     } else if (request.message == false) {
-      chrome.storage.local.set({ isInstalled: false }, () => {
+      chrome.storage.local.set({ ExtensionState: false }, () => {
         console.log("Value is set to false");
       });
       window.location.reload();
