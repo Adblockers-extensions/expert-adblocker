@@ -23,18 +23,14 @@ chrome.runtime.onInstalled.addListener((details) => {
       break;
     case "update":
       console.info("EXTENSION UPDATED");
-
       break;
     default:
       console.info("BROWSER UPDATED");
       break;
   }
+
 });
 
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status == "complete" && tab.url) {
-    console.log("Clearing extension state!");
-    chrome.storage.local.set({ DOMLOAD: true });
-  }
-});
+
+

@@ -13,16 +13,16 @@
     "default_title": "TrueAdBlocker Expert AdBlocker - free adblocker",
     "default_icon": "expert-ad-blocker-16.png"
   },
-  "permissions": ["declarativeNetRequest", "storage"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
+    "rule_resources": []
   },
   "options_page": "options.html",
   "background": {
@@ -32,34 +32,104 @@
     {
       "matches": ["<all_urls>"],
       "js": ["contentScript.js", "sponsered.js"]
+
     },
     {
-      "matches": ["https://*.twitch.tv/*"],
-      "js": ["adRemove.js", "removeTwitchAds.js"],
+      "matches": [
+        "https://open.spotify.com/*"
+      ],
+      "js": [
+        "contentScriptSpotify.js"
+      ],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://open.spotify.com/*"],
-      "js": ["contentScriptSpotify.js"],
-      "run_at": "document_start"
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "Youtube.js"
+      ]
     },
     {
-      "matches": ["https://www.youtube.com/*"],
-      "js": ["Youtube.js"]
+      "matches": [
+        "https://www.peacocktv.com/*"
+      ],
+      "js": [
+        "peacock.js"
+      ]
     },
     {
+
       "matches": ["https://www.peacocktv.com/*"],
       "js": ["peacock.js"]
     },
+    {  "matches": [
+        "https://play.max.com/*"
+      ],
+      "js": [
+        "hbomax.js"
+      ]
+
+    },
     {
-      "matches": ["https://play.max.com/*"],
-      "js": ["hbomax.js"]
+      "matches": [
+        "*://*.crunchyroll.com/*"
+      ],
+      "js": [
+        "crunchyroll.js"
+      ],
+      "match_origin_as_fallback": true,
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.hulu.com/*"
+      ],
+      "js": [
+        "hulu.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://*.twitch.tv/*"
+      ],
+      "js": [
+        "adRemove.js",
+        "removeTwitchAds.js"
+      ],
+      "run_at": "document_start",
+      "match_origin_as_fallback": true,
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.jiocinema.com/*"
+      ],
+      "js": [
+        "jioCinema.js"
+      ],
+      "match_origin_as_fallback": true,
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["adRemove.js", "removeTwitchAds.js"],
-      "matches": ["https://*.twitch.tv/*"]
+      "resources": [
+        "adRemove.js",
+        "removeTwitchAds.js"
+      ],
+      "matches": [
+        "https://*.twitch.tv/*"
+      ]
+    },
+    {
+      "resources": [
+        "crunchyroll.js"
+      ],
+      "matches": [
+        "https://www.crunchyroll.com/*"
+      ]
     },
     {
       "resources": [
@@ -68,7 +138,9 @@
         "adsAdsRemoveSpotify.js",
         "adswsHooksSpotify.js"
       ],
-      "matches": ["https://open.spotify.com/*"]
+      "matches": [
+        "https://open.spotify.com/*"
+      ]
     }
   ]
 }
