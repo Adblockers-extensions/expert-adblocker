@@ -1,4 +1,5 @@
-import observeMutations from "./Observer";
+import observeMutations from "../utils/Observer";
+
 // GET THE CURRENT URL AND RUN THE FUNCTION ACCORDINGLY
 const CURRENT_URL = window.location.href;
 const postParentDivs = document.querySelectorAll(".x1hc1fzr.x1unhpq9.x6o7n8i");
