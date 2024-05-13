@@ -36,20 +36,29 @@
 
 // BY MUTATION OBSERVER
 const checkForAdCountdown = () => {
-  const videoAdsContainer = document.querySelector("#amazon-video-ads-ui");
-  console.log("videoAdsContainer found");
-  if (videoAdsContainer) {
-    const adVideos = videoAdsContainer.querySelectorAll("video");
-    console.log("Total Ads count : ", adVideos.length);
-    if (adVideos.length > 0) {
-      adVideos.forEach((ad) => {
-        ad.duration && (ad.currentTime = ad.duration);
-        console.log("Ad Skipped : ", ad);
-      });
+  const videoAdsContainer = document.getElementById("amazon-video-ads-ui");
+  const adVideos = document.querySelector("video");
+  if (adVideos) {
+    console.log('Step:1')
+    if (videoAdsContainer) {
+      console.log('Step:2')
+      fastForward(adVideos)
+      return;
+    } else {
+      backToNormal(adVideos)
     }
   }
-};
 
+}
+function fastForward(player) {
+  player.playbackRate = 5.5;
+  player.muted = true;
+}
+
+function backToNormal(player) {
+  player.playbackRate = 1.0;
+  player.muted = false;
+}
 const observer = new MutationObserver(checkForAdCountdown);
 observer.observe(document, { childList: true, subtree: true });
 checkForAdCountdown();
