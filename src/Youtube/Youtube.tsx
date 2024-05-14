@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import adsCount from "../contentScript/AdsCount";
+import adsCount from "../utils/AdsCount";
 const App: React.FC<{}> = () => {
   const [extensionState, setExtensionState] = useState();
 

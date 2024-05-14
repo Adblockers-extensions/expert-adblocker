@@ -1,4 +1,5 @@
-import observeMutations from "./Observer";
+import observeMutations from "../utils/Observer";
+
 //GET THE CURRENT URL AND RUN THE FUNCTION ACCODINGLY
 const CURRENT_URL = window.location.href;
 export async function SearchFeed() {
@@ -26,7 +27,6 @@ export async function SearchFeed() {
           div.remove();
         }
       });
-      
       const bingFeedAdsDiv = document.querySelectorAll(".b_algo");
       const resultDivs = [];
       bingFeedAdsDiv.forEach((div) => {

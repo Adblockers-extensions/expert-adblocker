@@ -21,7 +21,7 @@ module.exports = {
     peacock: path.resolve("src/peacock/peacockAdBlocker.js"),
     hbomax: path.resolve("src/Hbomax/hbomax.js"),
     crunchyroll: path.resolve("src/crunchyroll/crunchyrollAdBlocker.js"),
-    hulu: path.resolve("src/hulu/hulu.tsx"),
+    hulu: path.resolve("src/hulu/hulu.js"),
     sponsered: path.resolve("src/facebook/Sponser.tsx"),
   },
   module: {
@@ -78,6 +78,7 @@ module.exports = {
           "peacock",
           "hbomax",
           "sponsered",
+          "hulu",
         ];
         return !excludedChunks.includes(chunk.name);
       },

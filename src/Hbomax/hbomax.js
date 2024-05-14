@@ -1,9 +1,13 @@
+import adsCount from "../utils/AdsCount";
+import observeMutations from "../utils/Observer";
+let fast = false;
+let normal = false;
 const HBOMAX = () => {
-  const adtext = document.querySelector('.gigKKX')
+  const adtext = document.querySelector(".gigKKX");
   const FORWARD = 5.5;
   const player = document.querySelectorAll("video")[0];
   if (player && player.buffered.length >= 1) {
-    if (adtext?.textContent==='Ad') {
+    if (adtext?.textContent === "Ad") {
       fastForward(player);
       return;
     } else {
@@ -11,19 +15,21 @@ const HBOMAX = () => {
     }
   }
   function fastForward(player) {
-    player.playbackRate = FORWARD;
-    player.muted = true;
+    if (!fast) {
+      player.playbackRate = FORWARD;
+      player.muted = true;
+      fast = true;
+      normal = false;
+      adsCount(Promise.resolve(1));
+    }
   }
   function backToNormal(player) {
-    player.playbackRate = 1.0;
-    player.muted = false;
+    if (!normal) {
+      player.playbackRate = 1.0;
+      player.muted = false;
+      fast = false;
+      normal = true;
+    }
   }
-}
-const observer = new MutationObserver(HBOMAX);
-observer.observe(document, {
-  childList: true,
-  subtree: true,
-  attributes: true,
-});
-HBOMAX();
-
+};
+observeMutations(HBOMAX);

@@ -1,56 +1,40 @@
-console.log("Jiocinema ad blocker........");
+import observeMutations from "../utils/Observer";
+import adsCount from "../utils/AdsCount";
 
-// Target video elements with title="Advertisement"
-const targetNode = document.body;
+const jioCinema = (mutation) => {
+  if (mutation.type === "childList") {
+    mutation.addedNodes.forEach((node) => {
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "VIDEO") {
+        if (node.getAttribute("title") === "Advertisement") {
+          node.addEventListener("loadedmetadata", () => {
+            const controls = document.querySelector(
+              ".mui-style-esv9wg-hideControls"
+            );
 
-// Options for the observer (which mutations to observe)
-const config = { attributes: true, childList: true, subtree: true };
+            const skipButton = document.querySelector(
+              ".videoAdUi.trueview.videoAdUiInstreamUxRefresh.ima-action-ad"
+            );
 
-// Callback function to execute when mutations are observed
-const callback = function (mutationsList, observer) {
-  for (let mutation of mutationsList) {
-    if (mutation.type === "childList") {
-      // Check added nodes for video elements with title="Advertisement"
-      mutation.addedNodes.forEach((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE && node.tagName === "VIDEO") {
-          if (node.getAttribute("title") === "Advertisement") {
-            node.addEventListener("loadedmetadata", () => {
-              console.log("Ad Video : ", node);
-              const controls = document.querySelector(
-                ".mui-style-esv9wg-hideControls"
-              );
+            if (controls) {
+              controls.style.display = "none";
+            }
 
-              const skipButton = document.querySelector(
-                ".videoAdUi.trueview.videoAdUiInstreamUxRefresh.ima-action-ad"
-              );
+            if (skipButton) {
+              skipButton.style.display = "none !important";
+            }
 
-              if (controls) {
-                controls.style.display = "none";
-              }
-
-              if (skipButton) {
-                skipButton.style.display = "none !important";
-              }
-
-              node.muted = true;
-              node.style.display = "none";
-              if (!isNaN(node.duration) && isFinite(node.duration)) {
-                node.currentTime = node.duration;
-                console.log("Ad video skipped successfully ");
-              } else {
-                console.log("Failed to Skip Ad video");
-              }
-              controls.style.display = "block";
-            });
-          }
+            node.muted = true;
+            node.style.display = "none";
+            if (!isNaN(node.duration) && isFinite(node.duration)) {
+              node.currentTime = node.duration;
+              adsCount(Promise.resolve(1));
+            }
+            controls.style.display = "block";
+          });
         }
-      });
-    }
+      }
+    });
   }
 };
 
-// Create a new observer instance
-const observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(targetNode, config);
+observeMutations(jioCinema);

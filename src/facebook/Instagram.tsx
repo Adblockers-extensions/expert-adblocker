@@ -1,4 +1,5 @@
-import observeMutations from "./Observer";
+import observeMutations from "../utils/Observer";
+
 //GET THE CURRENT URL AND RUN THE FUNCTION ACCODINGLY
 const CURRENT_URL = window.location.href;
 export async function InstagramFeedSponser() {

@@ -1,15 +1,34 @@
-console.log("Crunchyroll Ad Blocker .........");
+import adsCount from "../utils/AdsCount";
+import observeMutations from "../utils/Observer";
 
-(() => {
-  setInterval(() => {
-    document
-      .querySelectorAll('video[title="Advertisement"]')
-      .forEach((video) => {
-        video.duration && (video.currentTime = video.duration);
-      });
-    var elements = document.getElementsByClassName('erc-watch-upsell-banner upsell-banner-container');
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].style.display = 'none';
+let adnumber = 0;
+let lastLabel = null;
+const crunchyRoll = () => {
+  const containerElement = document.querySelectorAll("#vilos");
+  const label = document.querySelector('[data-testid="vilos-ad_label"]');
+  if (label && label !== lastLabel) {
+    lastLabel = label;
+    const number = label.textContent.split(" ")[3];
+    if (number) {
+      adnumber = parseInt(number);
+      adsCount(Promise.resolve(adnumber));
     }
-  }, 250);
-})();
+  }
+
+  if (containerElement) {
+    containerElement.forEach((element) => {
+      if (element) {
+        const adContainer = element.querySelectorAll("#ad-container");
+        adContainer.forEach((ele) => {
+          const video = ele.querySelector("video");
+          if (video && video.buffered && video.buffered.length > 0) {
+            video.muted = false;
+            video.currentTime = video.duration;
+          }
+        });
+      }
+    });
+  }
+};
+
+observeMutations(crunchyRoll);

@@ -1,4 +1,5 @@
-console.log("Peacock Ad Blocker running.....");
+import observeMutations from "../utils/Observer";
+
 let remainingTimeSet = false;
 
 const checkForAdCountdown = () => {
@@ -26,7 +27,6 @@ const checkForAdCountdown = () => {
         adVideoElement.style.visibility = "visible";
         adVideoElement.muted = false;
         remainingTimeSet = false;
-
         console.log("Ad Video Skipped!");
       } else {
         console.log("Ad Video Element Not found");
@@ -35,6 +35,4 @@ const checkForAdCountdown = () => {
   }
 };
 
-const observer = new MutationObserver(checkForAdCountdown);
-observer.observe(document, { childList: true, subtree: true });
-checkForAdCountdown();
+observeMutations(checkForAdCountdown);
