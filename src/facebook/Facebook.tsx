@@ -88,19 +88,10 @@ function getAllPostSpan() {
   });
   return texts;
 }
-
-function sponsoredVideos() {
-  POST.forEach((video: HTMLVideoElement) => {
-    const videos = video.querySelectorAll("video");
-    videos.forEach((state) => {
-      console.log(state);
-      if (state) {
-        setTimeout(() => {
-          state.pause();
-        }, 2000);
-      }
-    });
-  });
+function sponsoredVideos(){
+  let childNode: HTMLElement | null = document.querySelector('.xykv574');
+  let videoadforblock: HTMLElement = document.querySelector('.xe8uvvx');
+  
 }
 
 function compare() {

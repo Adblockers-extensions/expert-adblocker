@@ -11,12 +11,9 @@ const App: React.FC<{}> = () => {
     }
   });
   useEffect(() => {
-    chrome.storage.local.get("DOMLOAD", function (result) {
-      if (result.DOMLOAD === true) {
-        setDOM(true);
+
         facebookBlocker();
-      } else return;
-    });
+
   }, []);
 
   async function facebookBlocker() {
