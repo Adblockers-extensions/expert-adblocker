@@ -1,28 +1,26 @@
-   // SIDE SPONSORED ADS
-   const sponsoredDivs = document.querySelectorAll('[role="complementary"]');
-   if (sponsoredDivs) {
-     sponsoredDivs.forEach((div) => {
-       if (!(div instanceof HTMLElement)) return;
-       if (!div.dataset.processed) {
-         const targetDiv = div.querySelector(".x1y1aw1k");
-         if (targetDiv) {
-           const sideSponsorDiv = div.querySelector("span");
-           if (sideSponsorDiv) {
-             sideSponsorDiv.style.display = "none";
-           } else {
-             console.log("No span found within targetDiv.");
-           }
-         } else {
-           console.log(
-             "No div with class name x1y1aw1k found within sponsoredDivs."
-           );
-         }
-         div.dataset.processed = "true";
-       }
-     });
-   }
-
-   import observeMutations from "./Observer";
+// SIDE SPONSORED ADS
+const sponsoredDivs = document.querySelectorAll('[role="complementary"]');
+if (sponsoredDivs) {
+  sponsoredDivs.forEach((div) => {
+    if (!(div instanceof HTMLElement)) return;
+    if (!div.dataset.processed) {
+      const targetDiv = div.querySelector(".x1y1aw1k");
+      if (targetDiv) {
+        const sideSponsorDiv = div.querySelector("span");
+        if (sideSponsorDiv) {
+          sideSponsorDiv.style.display = "none";
+        } else {
+          console.log("No span found within targetDiv.");
+        }
+      } else {
+        console.log(
+          "No div with class name x1y1aw1k found within sponsoredDivs."
+        );
+      }
+      div.dataset.processed = "true";
+    }
+  });
+}
 
 // GET THE CURRENT URL AND RUN THE FUNCTION ACCORDINGLY
 const CURRENT_URL = window.location.href;
@@ -35,7 +33,7 @@ export async function FacebookFeedSponser() {
     const feedPostType = document.querySelectorAll('div[role="main"]');
     const postParentDivs = document.querySelectorAll(".x1lliihq");
 
-    const spanTexts: Set<string> = new Set();
+    const spanTexts = new Set();
     feedPostType.forEach((element) => {
       if (element && element instanceof HTMLElement) {
         postParentDivs.forEach((div) => {
@@ -57,18 +55,9 @@ export async function FacebookFeedSponser() {
                       parentDiv.classList.contains("x1lliihq") &&
                       parentDiv.classList.length === 1
                     ) {
-                      // console.log(
-                      //   "Parent div with only class x1lliihq:",
-                      //   parentDiv
-                      // );
-
-                      {
-                        const parentDivs =
-                          document.querySelectorAll(".x1lliihq");
-                        ImageTextMatched(spanTexts, parentDivs);
-                        // parentDiv.style.display = "none";
-                        break;
-                      }
+                      const parentDivs = document.querySelectorAll(".x1lliihq");
+                      ImageTextMatched(spanTexts, parentDivs);
+                      break;
                     }
                     parentDiv = parentDiv.parentElement;
                   }
@@ -95,9 +84,9 @@ export async function FacebookFeedSponser() {
 
 // Function to match images and text
 function imageMatched(
-  span: HTMLElement,
-  spanTexts: Set<string>,
-  postParentDivs: NodeListOf<Element>
+  span,
+  spanTexts,
+  postParentDivs
 ) {
   spanTexts.add(span.textContent?.trim() || "");
   if (span) {
@@ -108,13 +97,10 @@ function imageMatched(
         imageElementsInDiv.forEach((image) => {
           if (image && image.naturalWidth > 300 && image.naturalHeight > 300) {
             const imageAlt = image.getAttribute("alt");
-            // console.log(imageAlt);
             if (imageAlt && spanTexts.has(imageAlt.trim())) {
               div.style.display = "none";
-              // console.log(div, "imageMatched");
             } else if (imageAlt === "") {
               div.style.display = "none";
-              // console.log(div, "no ALT");
             }
           }
         });
@@ -125,8 +111,8 @@ function imageMatched(
 }
 
 function ImageTextMatched(
-  spanTexts: Set<string>,
-  postParentDivs: NodeListOf<Element>
+  spanTexts,
+  postParentDivs
 ) {
   postParentDivs.forEach((div) => {
     if (!(div instanceof HTMLElement)) return;
@@ -143,7 +129,7 @@ function ImageTextMatched(
               console.log(div, "imageMatched");
             }
           } else {
-            div.style.display = "none"; // Hide the div if alt text is empty
+            div.style.display = "none";
           }
         }
       });
@@ -151,6 +137,3 @@ function ImageTextMatched(
     }
   });
 }
-
-
-export default FacebookFeedSponser;

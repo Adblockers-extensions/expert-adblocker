@@ -23,6 +23,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       break;
     case "update":
       console.info("EXTENSION UPDATED");
+      
       break;
     default:
       console.info("BROWSER UPDATED");

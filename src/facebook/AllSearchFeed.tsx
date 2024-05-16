@@ -27,7 +27,6 @@ export async function SearchFeed() {
           div.remove();
         }
       });
-      
       const bingFeedAdsDiv = document.querySelectorAll(".b_algo");
       const resultDivs = [];
       bingFeedAdsDiv.forEach((div) => {
