@@ -27,7 +27,7 @@ const checkForAdCountdown = () => {
         adVideoElement.style.visibility = "visible";
         adVideoElement.muted = false;
         remainingTimeSet = false;
-        // console.log("Ad Video Skipped!");
+        console.log("Ad Video Skipped!");
       } else {
         // console.log("Ad Video Element Not found");
       }
