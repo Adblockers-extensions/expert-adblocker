@@ -1,3 +1,4 @@
+import adsCount from "../utils/AdsCount";
 import observeMutations from "../utils/Observer";
 
 // GET THE CURRENT URL AND RUN THE FUNCTION ACCORDINGLY
@@ -143,6 +144,7 @@ function compare() {
       // If any image alt text is found in the heading, hide the post div
       if (shouldHide) {
         div.style.display = "none";
+        adsCount("Facebook",Promise.resolve(1))
         // Mark the div as processed to avoid reprocessing
         console.log(div, "HIDDEN");
         div.dataset.processed = "true";
@@ -151,29 +153,4 @@ function compare() {
   });
 }
 
-// function extractImagesFromPosts() {
-//   POST.forEach((postDiv) => {
-//     if (postDiv instanceof HTMLElement) {
-//       const images: NodeListOf<HTMLImageElement> =
-//         postDiv.querySelectorAll("img");
-//       images.forEach((image) => {
-//         if (image.naturalHeight > 300 && image.naturalWidth > 300) {
-//           IMAGE.add(image.alt);
-//         }
-//       });
-//     }
-//   });
-// }
-
-// function extractHeading() {
-//   POST.forEach((postDiv) => {
-//     if (postDiv instanceof HTMLElement) {
-//       const headings: NodeListOf<HTMLElement> =
-//         postDiv.querySelectorAll("span strong");
-//       headings.forEach((heading) => {
-//         HEADING.add(heading.innerText || heading.textContent);
-//       });
-//     }
-//   });
-// }
 export default FacebookFeedSponser;

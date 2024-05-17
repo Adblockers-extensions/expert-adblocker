@@ -19,6 +19,19 @@ chrome.runtime.onInstalled.addListener((details) => {
           });
       });
       chrome.storage.local.set({ ExtensionState: true });
+      const countdata = [
+        {
+            name: 'SonyLiv',
+            count: 0
+        },
+        {
+            name: 'HboMax',
+            count: 0
+        }
+    ]
+    chrome.storage.local.set({ AdsData:JSON.stringify(countdata)}).then(() => {
+        console.log("Value is set");
+    });
       chrome.tabs.create({ url: "https://www.trueadblocker.net" });
       break;
     case "update":
