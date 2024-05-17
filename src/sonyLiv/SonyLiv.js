@@ -1,7 +1,7 @@
 import adsCount from "../utils/AdsCount"
 import observeMutations from "../utils/Observer"
 
-const SONY_LIVE=()=>{
+const SONY_LIV=()=>{
    const AddContainer=document.querySelector('.ad-wrapper')
    if(AddContainer){
       AddContainer.remove()
@@ -11,4 +11,4 @@ const SONY_LIVE=()=>{
    return;
 }
 
-observeMutations(SONY_LIVE)
+observeMutations(SONY_LIV)
