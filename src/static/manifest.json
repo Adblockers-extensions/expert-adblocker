@@ -117,7 +117,7 @@
         "https://www.sonyliv.com/*"
       ],
       "js": [
-        "sonylive.js"
+        "sonyliv.js"
       ],
       "match_origin_as_fallback": true,
       "all_frames": true
