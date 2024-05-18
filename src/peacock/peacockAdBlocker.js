@@ -1,3 +1,4 @@
+import adsCount from "../utils/AdsCount";
 import observeMutations from "../utils/Observer";
 
 let remainingTimeSet = false;
@@ -28,6 +29,7 @@ const checkForAdCountdown = () => {
         adVideoElement.muted = false;
         remainingTimeSet = false;
         console.log("Ad Video Skipped!");
+        adsCount("Peacock",Promise.resolve(1))
       } else {
         // console.log("Ad Video Element Not found");
       }

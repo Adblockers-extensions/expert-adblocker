@@ -4,6 +4,7 @@ export default function observeMutations(callback) {
       if (mutation.type === "childList" || mutation.type === "attributes") {
         callback(mutation);
       }
+    
     }
   };
   const observer = new MutationObserver(handleMutation);

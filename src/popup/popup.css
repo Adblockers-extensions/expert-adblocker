@@ -87,9 +87,9 @@
 
 .tadb_info .tadb_info-container .top .left p, .tadb_info .tadb_info-container .top .right p{
   color: #585858;
-  font-size: 14px;
-  text-transform: lowercase;
-  font-weight: normal;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
  .tadb_info .tadb_info-container .bottom{

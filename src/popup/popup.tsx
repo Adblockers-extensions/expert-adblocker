@@ -115,7 +115,7 @@ const Loader = ({ blockedCount }) => {
           </div>
           <div className="blocked_count">
             <div className="tadb_info">
-              <h2>NUMBER OF ITEMS BLOCKED</h2>
+              <h2>NUMBER OF WEBSITES ADS BLOCKED</h2>
               {
                 blockedCount?.map((item,ind) => (
                   <div key={ind} className="tadb_info-container">
