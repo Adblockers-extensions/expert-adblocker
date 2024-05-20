@@ -1,3 +1,4 @@
+import adsCount from "../utils/AdsCount";
 
 
 (function () {
@@ -419,6 +420,7 @@
   
         totalAdsRemoved++;
       }
+      adsCount("Spotify",Promise.resolve(1))
     }
   
     var lastMissedAdTime = 0;

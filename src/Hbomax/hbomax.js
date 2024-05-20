@@ -20,7 +20,7 @@ const HBOMAX = () => {
       player.muted = true;
       fast = true;
       normal = false;
-      adsCount(Promise.resolve(1));
+      adsCount("HboMax",Promise.resolve(1));
     }
   }
   function backToNormal(player) {

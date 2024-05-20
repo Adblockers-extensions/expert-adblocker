@@ -11,7 +11,7 @@ const crunchyRoll = () => {
     const number = label.textContent.split(" ")[3];
     if (number) {
       adnumber = parseInt(number);
-      adsCount(Promise.resolve(adnumber));
+      adsCount("Crunchy Roll",Promise.resolve(adnumber));
     }
   }
 

@@ -11,7 +11,7 @@ export async function InstagramFeedSponser() {
         const parentElement = span.parentNode;
         if (parentElement && parentElement instanceof HTMLElement) {
           parentElement.remove();
-          adsCount(Promise.resolve(1))
+          adsCount("Instagram",Promise.resolve(1))
         }
       }
     });

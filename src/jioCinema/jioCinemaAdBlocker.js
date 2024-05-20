@@ -27,7 +27,7 @@ const jioCinema = (mutation) => {
             node.style.display = "none";
             if (!isNaN(node.duration) && isFinite(node.duration)) {
               node.currentTime = node.duration;
-              adsCount(Promise.resolve(1));
+              adsCount("Jio Cinema",Promise.resolve(1));
             }
             controls.style.display = "block";
           });

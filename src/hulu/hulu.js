@@ -28,7 +28,7 @@ const Hulu = () => {
         '.controls__setting-option[data-val="2150400"]'
       );
       if (lowQuality) {
-        adsCount(Promise.resolve(1));
+        adsCount("Hulu",Promise.resolve(1));
         lowclicked = true;
         highclicked = false;
         lowQuality.click();

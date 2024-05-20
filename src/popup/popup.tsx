@@ -3,11 +3,18 @@ import ReactDOM from "react-dom";
 import "./popup.css";
 
 const App: React.FC<{}> = () => {
-  const [blockedCount, setBlockedCount] = useState(0);
+  const [blockedCount, setBlockedCount] = useState([]);
 
   useEffect(() => {
-    chrome.storage.local.get("blockedAds", function (result) {
-      setBlockedCount(result.blockedAds);
+    chrome.storage.local.get(['AdsData'], function (result) {
+      if (result.AdsData) {
+        const parsedData = JSON.parse(result.AdsData);
+        setBlockedCount(parsedData)
+        console.log(parsedData); // Logs the array of objects
+        // You can now work with parsedData as needed
+      } else {
+        console.log("No data found under AdsData key.");
+      }
     });
   }, []);
 
@@ -17,6 +24,7 @@ const App: React.FC<{}> = () => {
     </>
   );
 };
+
 
 const Loader = ({ blockedCount }) => {
   const [isActiveYoutube, setIsActiveYoutube] = useState(true);
@@ -107,45 +115,24 @@ const Loader = ({ blockedCount }) => {
           </div>
           <div className="blocked_count">
             <div className="tadb_info">
-              <h2>NUMBER OF ITEMS BLOCKED</h2>
+              <h2>NUMBER OF WEBSITES ADS BLOCKED</h2>
+              {
+                blockedCount?.map((item,ind) => (
+                  <div key={ind} className="tadb_info-container">
 
-              <div className="tadb_info-container">
-                <div className="top">
-                  <div className="left">
-                    <p>on this page</p>
-                    <h4>{blockedCount}</h4>
+                    <div className="top">
+                      <div className="left">
+                        <p>{item.name}</p>
+                      </div>
+                      <div className="right">
+                        <p>{item.count} Ads</p>
+                      </div>
+                    </div>
+
+
                   </div>
-                  <div className="right">
-                    <p>in total</p>
-                    <h4>{blockedCount}</h4>
-                  </div>
-                </div>
-                {/* <div className="bottom">
-                  <a href="https://www.trueadblocker.net/">
-                    <button>
-                      {" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="18" cy="5" r="3" />
-                        <circle cx="6" cy="12" r="3" />
-                        <circle cx="18" cy="19" r="3" />
-                        <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-                        <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
-                      </svg>{" "}
-                      Share numbers with friends
-                    </button>
-                  </a>
-                </div> */}
-              </div>
+                ))
+              }
             </div>
           </div>
         </header>
