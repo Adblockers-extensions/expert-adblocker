@@ -1,5 +1,5 @@
-chrome.storage.local.get("isInstalled", function(data) {
-  const local = data.isInstalled;
+chrome.storage.local.get("ExtensionState", function (data) {
+  const local = data.ExtensionState;
   doSomethingWithLocal(local);
 });
   ////////receiving message from popup.js////////

@@ -1,288 +1,217 @@
-////////////////////////////////////////////////
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-
-
+import adsCount from "../utils/AdsCount";
 const App: React.FC<{}> = () => {
-  const [first, setFirst] = useState<boolean>();
-  
-  useEffect(() => {
-    chrome.storage.local.get("isInstalled", function (data) {
-      if (data.isInstalled !== undefined) {
-        setFirst(data.isInstalled);
-      }
-    });
-  }, []);
-
- 
+  const [extensionState, setExtensionState] = useState();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (first === true) {
-        adAdBlocker();
-        console.log(first);
-      } else if (first === false) {
-        removeAdBlocker();
-        console.log(first);
+    chrome.storage.local.get("ExtensionState", function (result) {
+      if (result.ExtensionState !== undefined) {
+        setExtensionState(result.ExtensionState);
       }
-    }, 10);
-  }, [first]);
-
-
-
-  ////////////////// removing YTs ads //////////////////////
-  const adAdBlocker = () => {
-    // console.log("adBlocker running");
-  
-
-    function getDom() {
-      const targetNode =
-        document.getElementById("movie_player") || document.body;
-
-      selfObserver(targetNode);
-    }
-
-    // selfObserver for ytADS///
-    const selfObserver = (documentNode: HTMLElement) => {
-      const observer = new MutationObserver(() => {
-        // Call the function to collect the counts
-        adFunction();
-      });
-
-      const config = {
-        subtree: true,
-        childList: true,
-      };
-
-      // Start observing
-      observer.observe(documentNode, config);
-    };
-    const adFunction = () => {
-      const counts = {
-        mainDocumentHiddenCount: 0,
-        richGridRowHiddenCount: 0,
-        briefAdsHiddenCount: 0,
-      };
-
-      const mainDocument = document.getElementsByClassName(
-        "video-ads ytp-ad-module"
-      );
-      const playerOverlay = document.getElementsByClassName(
-        "ytp-ad-player-overlay"
-      );
-      const imageOverlay = document.getElementsByClassName(
-        "ytp-ad-image-overlay"
-      );
-      const skipBtn = document.getElementsByClassName(
-        "ytp-ad-skip-button-modern"
-      );
-      const videoDocument = document.getElementsByClassName(
-        "video-stream html5-main-video"
-      );
-      const textOverlay = document.getElementsByClassName(
-        "ytp-ad-text-overlay"
-      );
-      const playerAds = document.getElementById("player-ads");
-      const richGridRow = document.getElementsByTagName("ytd-ad-slot-renderer");
-      const richGridRowAds = document.getElementsByTagName(
-        "ytd-in-feed-ad-layout-renderer"
-      );
-      const briefAds = document.getElementsByTagName("iframe");
-      const Twitch = document.getElementsByClassName(
-        "Layout-sc-1xcs6mc-0 cDieGF default-panel"
-      );
-
-      const handleSkipBtn = () => {
-        if (skipBtn.length > 0) {
-          (skipBtn[0] as HTMLButtonElement).click();
-        }
-      };
-
-      if (mainDocument.length > 0) {
-        counts.mainDocumentHiddenCount++;
-        handleSkipBtn();
-
-        if (playerOverlay.length > 0) {
-          (playerOverlay[0] as HTMLElement).style.visibility = "hidden";
-          for (let i = 0; i < videoDocument.length; i++) {
-            if (
-              videoDocument[i] &&
-              (videoDocument[i] as HTMLVideoElement).duration
-            ) {
-              (videoDocument[i] as HTMLVideoElement).currentTime = (
-                videoDocument[i] as HTMLVideoElement
-              ).duration;
-            }
-          }
-          handleSkipBtn();
-        }
-        if (imageOverlay.length > 0) {
-          (imageOverlay[0] as HTMLElement).style.visibility = "hidden";
-        }
-      }
-
-      if (playerAds) {
-        (playerAds as HTMLElement).style.display = "none";
-      }
-
-      if (textOverlay.length > 0) {
-        (textOverlay[0] as HTMLElement).style.display = "none";
-      }
-      if (richGridRow.length > 0) {
-        for (let i = 0; i < richGridRow.length; i++) {
-          const adElement = richGridRow[i] as HTMLElement;
-          adElement.style.setProperty("display", "none", "important");
-          counts.richGridRowHiddenCount++;
-        }
-      }
-      if (richGridRowAds.length > 0) {
-        for (let i = 0; i < richGridRowAds.length; i++) {
-          const adElement = richGridRowAds[i] as HTMLElement;
-          adElement.style.setProperty("display", "none", "important");
-        }
-      }
-      if (briefAds.length > 0) {
-        for (let i = 0; i < briefAds.length; i++) {
-          const adElement = briefAds[i] as HTMLElement;
-          adElement.style.setProperty("display", "none", "important");
-          counts.briefAdsHiddenCount++;
-        }
-      }
-      if (Twitch.length > 0) {
-        for (let i = 0; i < Twitch.length; i++) {
-          const adElement = Twitch[i] as HTMLElement;
-          adElement.style.setProperty("display", "none", "important");
-        }
-      }
-
-      // Calculate the total count
-      const totalCount = Object.values(counts).reduce(
-        (total, count) => total + count,
-        0
-      );
-
-      // Return the counts and total count
-      return { counts, totalCount };
-    };
-    const { counts, totalCount } = adFunction();
-    chrome.storage.local.get("blockedAds", function (data) {
-      const previousBlockedAds = data.blockedAds || 0;
-
-      const newBlockedAds = previousBlockedAds + totalCount;
-      chrome.storage.local.set({ blockedAds: newBlockedAds }, function () {
-        console.log("Blocked ads: " + newBlockedAds);
-        // setTotalBlockedCount(newBlockedAds);
-      });
     });
+    if (extensionState === true) {
+      YtAdblocker();
+    }
+  }, [extensionState]);
 
-    getDom();
+  function YtAdblocker() {
+    const adblocker = true;
+    const removePopup = false;
+    // const updateCheck = true;
+    // const debugMessages = true;
+    // const updateModal = {
+    //   enable: true,
+    //   timer: 5000,
+    // };
+    let currentUrl = window.location.href;
+    let isAdFound = false;
+    let adLoop = 0;
+    let hasIgnoredUpdate = false;
+    // console.log("Script started");
+    if (adblocker) removeAds();
+    if (removePopup) popupRemover();
 
-  };
-  ///////////injecting normal DOM for showing ads///////////
-  const removeAdBlocker = () => {
-    // console.log("blockder stoppted");
+    function popupRemover() {
+      setInterval(() => {
+        const modalOverlay = document.querySelector(
+          "tp-yt-iron-overlay-backdrop"
+        );
+        const popup = document.querySelector(
+          ".style-scope ytd-enforcement-message-view-model"
+        );
+        const popupButton = document.getElementById("dismiss-button");
 
-    const adFunction = () => {
-      const mainDocument = document.getElementsByClassName(
-        "video-ads ytp-ad-module"
-      );
-      const playerOverlay = document.getElementsByClassName(
-        "ytp-ad-player-overlay"
-      );
-      const imageOverlay = document.getElementsByClassName(
-        "ytp-ad-image-overlay"
-      );
+        var video = document.querySelector("video");
 
-      const skipBtn = document.getElementsByClassName(
-        "ytp-ad-skip-button ytp-button"
-      );
+        const bodyStyle = document.body.style;
+        bodyStyle.setProperty("overflow-y", "auto", "important");
 
-      const videoDocument = document.getElementsByClassName(
-        "video-stream html5-main-video"
-      );
-
-      const textOverlay = document.getElementsByClassName(
-        "ytp-ad-text-overlay"
-      );
-
-      const playerAds = document.getElementById("player-ads");
-
-      const handleSkipBtn = () => {
-        if (skipBtn.length > 0) {
-          (skipBtn[0] as HTMLButtonElement).click();
+        if (modalOverlay) {
+          modalOverlay.removeAttribute("opened");
+          modalOverlay.remove();
         }
-      };
+        if (popup) {
+          // console.log("Popup detected, removing...");
+          if (popupButton) popupButton.click();
+          popup.remove();
+          video.play();
 
-      if (mainDocument.length > 0) {
-        handleSkipBtn();
-        if (playerOverlay.length > 0) {
-          (playerOverlay[0] as HTMLElement).style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-          );
-          for (let i = 0; i < videoDocument.length; i++) {
-            if (
-              videoDocument[i] &&
-              (videoDocument[i] as HTMLVideoElement).duration
-            ) {
-              (videoDocument[i] as HTMLVideoElement).currentTime = (
-                videoDocument[i] as HTMLVideoElement
-              ).duration;
+          setTimeout(() => {
+            video.play();
+          }, 500);
+          // console.log("Popup removed");
+        }
+        if (!video.paused) return;
+        video.play();
+      }, 1000);
+    }
+    function removeAds() {
+      var videoPlayback = 1;
+      setInterval(() => {
+        var video = document.querySelector("video");
+        const ad = [...document.querySelectorAll(".ad-showing")][0];
+        if (window.location.href !== currentUrl) {
+          currentUrl = window.location.href;
+          removePageAds();
+        }
+
+        if (ad) {
+          isAdFound = true;
+          adLoop = adLoop + 1;
+          if (adLoop < 10) {
+            const openAdCenterButton = document.querySelector(
+              ".ytp-ad-button-icon"
+            ) as HTMLElement | null;
+            openAdCenterButton?.click();
+
+            const blockAdButton = document.querySelector(
+              '[label="Block ad"]'
+            ) as HTMLElement | null;
+            blockAdButton?.click();
+
+            const blockAdButtonConfirm = document.querySelector(
+              '.Eddif [label="CONTINUE"] button'
+            ) as HTMLElement | null;
+            blockAdButtonConfirm?.click();
+
+            const closeAdCenterButton = document.querySelector(
+              ".zBmRhe-Bz112c"
+            ) as HTMLElement | null;
+            closeAdCenterButton?.click();
+          } else {
+            if (video) video.play();
+          }
+
+          const popupContainer = document.getElementById(
+            "popupContainer"
+          ) as HTMLElement | null;
+
+          if (popupContainer)
+            if (popupContainer.style.display == "")
+              popupContainer.style.display = "none";
+          // console.log("Found Ad");
+          const skipButtons = [
+            "ytp-ad-skip-button-container",
+            "ytp-ad-skip-button-modern",
+            ".videoAdUiSkipButton",
+            ".ytp-ad-skip-button",
+            ".ytp-ad-skip-button-modern",
+            ".ytp-ad-skip-button",
+            ".ytp-ad-skip-button-slot",
+          ];
+          if (video) {
+            video.playbackRate = 8.0;
+            video.volume = 0;
+            skipButtons.forEach((selector) => {
+              const elements = document.querySelectorAll(selector);
+              if (elements && elements.length > 0) {
+                elements.forEach((element) => {
+                  (element as HTMLElement).click();
+                });
+              }
+            });
+            video.play();
+            let randomNumber = Math.random() * (0.5 - 0.1) + 0.1;
+            video.currentTime = video.duration + randomNumber || 0;
+            if (video.currentTime === video.duration) {
+              adsCount("YouTube",Promise.resolve(1));
             }
           }
-          handleSkipBtn();
+
+          // console.log("skipped Ad");
+        } else {
+          if (video && video?.playbackRate == 8.0) {
+            video.playbackRate = videoPlayback;
+          }
+          if (isAdFound) {
+            isAdFound = false;
+            if (videoPlayback == 8.0) videoPlayback = 1;
+            if (video && isFinite(videoPlayback))
+              video.playbackRate = videoPlayback;
+            adLoop = 0;
+          } else {
+            if (video) videoPlayback = video.playbackRate;
+          }
         }
-        if (imageOverlay.length > 0) {
-          (imageOverlay[0] as HTMLElement).style.setProperty(
-            "visibility",
-            "visible",
-            "important"
-          );
-        }
-      }
+      }, 50);
 
-      if (playerAds) {
-        (playerAds as HTMLElement).style.setProperty(
-          "display",
-          "block",
-          "important"
-        );
-      }
-
-      if (textOverlay.length > 0) {
-        (textOverlay[0] as HTMLElement).style.setProperty(
-          "display",
-          "block",
-          "important"
-        );
-      }
-    };
-
-    adFunction();
-  };
-
-  ////////receiving message from popup.js////////
-  chrome.runtime.onMessage.addListener(function (
-    request,
-    sender,
-    sendResponse
-  ) {
-    if (request.message == true) {
-      chrome.storage.local.set({ isInstalled: true }, () => {
-        console.log("Value is set true");
-      });
-      window.location.reload();
-    } else if (request.message == false) {
-      chrome.storage.local.set({ isInstalled: false }, () => {
-        console.log("Value is set to false");
-      });
-      window.location.reload();
-    } else {
-      return;
+      removePageAds();
     }
-    sendResponse({ farewell: "Response from background script" });
-  });
+
+    function removePageAds() {
+      const sponsor = document.querySelectorAll(
+        "div#player-ads.style-scope.ytd-watch-flexy, div#panels.style-scope.ytd-watch-flexy"
+      );
+      const style = document.createElement("style");
+
+      style.textContent = `
+              ytd-action-companion-ad-renderer,
+              ytd-display-ad-renderer,
+              ytd-video-masthead-ad-advertiser-info-renderer,
+              ytd-video-masthead-ad-primary-video-renderer,
+              ytd-in-feed-ad-layout-renderer,
+              ytd-ad-slot-renderer,
+              yt-about-this-ad-renderer,
+              yt-mealbar-promo-renderer,
+              ytd-statement-banner-renderer,
+              ytd-ad-slot-renderer,
+              ytd-in-feed-ad-layout-renderer,
+              ytd-banner-promo-renderer-background
+              statement-banner-style-type-compact,
+              .ytd-video-masthead-ad-v3-renderer,
+              div#root.style-scope.ytd-display-ad-renderer.yt-simple-endpoint,
+              div#sparkles-container.style-scope.ytd-promoted-sparkles-web-renderer,
+              div#main-container.style-scope.ytd-promoted-video-renderer,
+              div#player-ads.style-scope.ytd-watch-flexy,
+              ad-slot-renderer,
+              ytm-promoted-sparkles-web-renderer,
+              masthead-ad,
+              tp-yt-iron-overlay-backdrop,
+  
+              #masthead-ad {
+                  display: none !important;
+              }
+          `;
+
+      document.head.appendChild(style);
+      sponsor?.forEach((element) => {
+        if (element.getAttribute("id") === "rendering-content") {
+          const htmlElement = element as HTMLElement;
+          htmlElement.childNodes?.forEach((childElement) => {
+            if (
+              childElement instanceof Element &&
+              childElement.getAttribute("data-target-id") &&
+              childElement.getAttribute("data-target-id") !==
+                "engagement-panel-macro-markers-description-chapters"
+            ) {
+              htmlElement.style.display = "none";
+            }
+          });
+        }
+      });
+    }
+  }
 
   return <></>;
 };

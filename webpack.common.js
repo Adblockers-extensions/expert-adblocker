@@ -21,6 +21,11 @@ module.exports = {
     peacock: path.resolve("src/peacock/peacockAdBlocker.js"),
     hbomax: path.resolve("src/Hbomax/hbomax.js"),
     crunchyroll: path.resolve("src/crunchyroll/crunchyrollAdBlocker.js"),
+    hulu: path.resolve("src/hulu/hulu.js"),
+    sponsered: path.resolve("src/facebook/Sponser.tsx"),
+    sonyliv: path.resolve("src/sonyLiv/SonyLiv.js"),
+    hotstar: path.resolve("src/hotstar/HotStar.js")
+
   },
   module: {
     rules: [
@@ -75,7 +80,10 @@ module.exports = {
           "jioCinema",
           "peacock",
           "hbomax",
-          "crunchyroll",
+          "sponsered",
+          "hulu",
+          "sonyliv",
+          "hotstar"
         ];
         return !excludedChunks.includes(chunk.name);
       },

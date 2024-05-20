@@ -1,33 +1,35 @@
-// console.log("HBOMAX Ad Blocker running.....");
-function HBOMAX() {
+import adsCount from "../utils/AdsCount";
+import observeMutations from "../utils/Observer";
+let fast = false;
+let normal = false;
+const HBOMAX = () => {
+  const adtext = document.querySelector(".gigKKX");
   const FORWARD = 5.5;
-  const adLabel = document.querySelector('[data-testid="ad"]');
   const player = document.querySelectorAll("video")[0];
   if (player && player.buffered.length >= 1) {
-    if (adLabel && adLabel.style.visibility === "visible") {
-      console.log("AD DETECED");
-      console.log(console.log(`SKIPPING AD ON ${FORWARD}`));
-      observer.disconnect();
+    if (adtext?.textContent === "Ad") {
       fastForward(player);
       return;
     } else {
       backToNormal(player);
-      observer.disconnect();
     }
   }
   function fastForward(player) {
-    player.playbackRate = FORWARD;
-    player.muted = true;
+    if (!fast) {
+      player.playbackRate = FORWARD;
+      player.muted = true;
+      fast = true;
+      normal = false;
+      adsCount("HboMax",Promise.resolve(1));
+    }
   }
   function backToNormal(player) {
-    player.playbackRate = 1.0;
-    player.muted = false;
+    if (!normal) {
+      player.playbackRate = 1.0;
+      player.muted = false;
+      fast = false;
+      normal = true;
+    }
   }
-}
-const observer = new MutationObserver(HBOMAX);
-observer.observe(document, {
-  childList: true,
-  subtree: true,
-  attributes: true,
-});
-HBOMAX();
+};
+observeMutations(HBOMAX);
