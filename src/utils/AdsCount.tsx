@@ -54,7 +54,6 @@ export default async function adsCount(AdsPath: string, resultPromise: Promise<n
         chrome.storage.local.get(['AdsData'], function (result) {
             if (!result.AdsData) {
                 chrome.storage.local.set({ AdsData: JSON.stringify(defaultCountData) }, function () {
-                    console.log("Initial AdsData set");
                 });
             }
         });
@@ -64,8 +63,6 @@ export default async function adsCount(AdsPath: string, resultPromise: Promise<n
             const prevBlocked = result.blockedAds || 0;
             const newBlocked = prevBlocked + response;
             chrome.storage.local.set({ blockedAds: newBlocked }, function () {
-                console.log("Blocked ads updated to: ", newBlocked);
-
                 // Update AdsData with the newBlocked value
                 chrome.storage.local.get(['AdsData'], function (result) {
                     let parsedData = defaultCountData;
@@ -84,7 +81,6 @@ export default async function adsCount(AdsPath: string, resultPromise: Promise<n
 
                     // Save the updated data
                     chrome.storage.local.set({ AdsData: JSON.stringify(parsedData) }, function () {
-                        console.log("AdsData updated");
                     });
                 });
             });
