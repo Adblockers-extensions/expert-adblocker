@@ -2,26 +2,32 @@ import adsCount from "../utils/AdsCount";
 import observeMutations from "../utils/Observer";
 let fast = false;
 let normal = false;
-console.log("HBOMAX RUNNING");
+let adtext = false;
 const HBOMAX = () => {
-  const adtext = document.querySelector(".gigKKX");
   const FORWARD = 5.5;
+  const ad = document.querySelector('[data-testid="ad"]');
   const player = document.querySelectorAll("video");
-  if (player && adtext) {
-    if (adtext?.textContent === "Ad") {
-      player.forEach(fastForward);
-    } else {
-      player.forEach(backToNormal);
+  if (ad) {
+    if (ad.style.visibility === "visible") {
+      adtext = true;
+    } else if (ad.style.visibility === "hidden") {
+      adtext = false;
     }
   }
+
+  if (player && adtext === true) {
+    player.forEach(fastForward);
+  } else {
+    player.forEach(backToNormal);
+  }
+
   function fastForward(player) {
     player.playbackRate = FORWARD;
     player.muted = true;
-    if (fast) {
+    if (!fast) {
       fast = true;
       normal = false;
-      // adsCount("HboMax", Promise.resolve(1));
-      console.log("ad skipped");
+      adsCount("HboMax", Promise.resolve(1));
     }
   }
   function backToNormal(player) {
@@ -33,4 +39,5 @@ const HBOMAX = () => {
     }
   }
 };
+
 observeMutations(HBOMAX);
