@@ -107,6 +107,7 @@ const App: React.FC<{}> = () => {
     sendResponse
   ) {
     if (request.message == true) {
+      console.log(request.message);
       chrome.storage.local.set({ ExtensionState: true }, () => {
         console.log("Value is set true");
       });
