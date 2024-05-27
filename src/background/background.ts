@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       });
       chrome.storage.local.set({ ExtensionState: true });
 
-      chrome.tabs.create({ url: "https://www.trueadblocker.net" });
+      chrome.tabs.create({ url: "https://www.expertadblocker.com/" });
       break;
     case "update":
       console.info("EXTENSION UPDATED");

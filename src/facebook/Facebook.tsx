@@ -89,10 +89,36 @@ function getAllPostSpan() {
   });
   return texts;
 }
+
 function sponsoredVideos(){
-  let childNode: HTMLElement | null = document.querySelector('.xykv574');
-  let videoadforblock: HTMLElement = document.querySelector('.xe8uvvx');
-  
+ 
+  POST.forEach((div) => {
+    if (!(div instanceof HTMLElement)) return;
+
+    let shouldHide = false;
+
+    if (!div.dataset.processed) {
+        const videos = div.querySelectorAll('video.x1lliihq.x5yr21d.xh8yej3');
+        videos.forEach((video) => {
+            if (isExactClasses(video, ['x1lliihq', 'x5yr21d', 'xh8yej3'])) {
+              console.log(video);
+                shouldHide = true;
+            }
+        });
+    }
+
+    if (shouldHide) {
+        div.style.display = "none";
+        adsCount("Facebook", Promise.resolve(1));
+        div.dataset.processed = "true";
+    }
+});
+
+function isExactClasses(element, classes) {
+    const classList = Array.from(element.classList);
+    return classList.length === classes.length && classes.every(className => classList.includes(className));
+}
+
 }
 
 function compare() {
