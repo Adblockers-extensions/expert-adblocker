@@ -1,14 +1,13 @@
-import adsCount from "../utils/AdsCount"
-import observeMutations from "../utils/Observer"
+import adsCount from "../utils/AdsCount";
+import observeMutations from "../utils/Observer";
 
-const SONY_LIVE=()=>{
-   const AddContainer=document.querySelector('.ad-wrapper')
-   if(AddContainer){
-      AddContainer.remove()
-      adsCount("SonyLiv",Promise.resolve(1))
-      console.log('Add Blocked !')
-   } 
-   return;
-}
+const SONY_LIVE = () => {
+  const AddContainer = document.querySelector(".ad-wrapper");
+  if (AddContainer) {
+    AddContainer.remove();
+    adsCount("SonyLiv", Promise.resolve(1));
+  }
+  return;
+};
 
-observeMutations(SONY_LIVE)
+observeMutations(SONY_LIVE);
